@@ -9,6 +9,8 @@ Nginx Beginner's Guide 中文翻译
 
 翻译自 [Nginx Beginner's Guide](https://nginx.org/en/docs/beginners_guide.html)。
 
+---
+
 本指南对 nginx 做了一个基本的介绍，并介绍了一些可以用它来完成的简单任务。这里假设读者的机器上已经安装了 nginx，如果还没有安装，请参见安装 nginx [页面](https://nginx.org/en/docs/install.html)。本指南介绍了如何启动和停止 nginx，以及重新加载它的配置，解释了配置文件的结构，并介绍了如何设置 nginx 来提供静态内容，如何将 nginx 配置为代理服务器，以及如何将它与 FastCGI 应用程序连接。
 
 nginx 有一个主进程和几个工作进程。主进程的主要目的是读取和评估配置，并维护工作进程。工作进程进行实际的请求处理，nginx 采用基于事件的模型和依赖于操作系统的机制来有效地在工作进程之间分配请求。工作进程的数量在配置文件中定义，对于给定的配置来说，可以是固定的，也可以根据可用的 CPU 核心数自动调整（详见 [worker_processes](https://nginx.org/en/docs/ngx_core_module.html#worker_processes)）。
