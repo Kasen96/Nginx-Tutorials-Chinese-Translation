@@ -9,11 +9,11 @@ Nginx Beginner's Guide 中文翻译
 
 翻译自 [Nginx Beginner's Guide](https://nginx.org/en/docs/beginners_guide.html)。
 
-本指南对 nginx 做了一个基本的介绍，并介绍了一些可以用它来完成的简单任务。这里假设读者的机器上已经安装了 nginx，如果还没有安装，请参见安装 nginx [页面](https://nginx.org/en/docs/install.html)。本指南介绍了如何启动和停止nginx，以及重新加载它的配置，解释了配置文件的结构，并介绍了如何设置 nginx 来提供静态内容，如何将 nginx 配置为代理服务器，以及如何将它与 FastCGI 应用程序连接。
+本指南对 nginx 做了一个基本的介绍，并介绍了一些可以用它来完成的简单任务。这里假设读者的机器上已经安装了 nginx，如果还没有安装，请参见安装 nginx [页面](https://nginx.org/en/docs/install.html)。本指南介绍了如何启动和停止 nginx，以及重新加载它的配置，解释了配置文件的结构，并介绍了如何设置 nginx 来提供静态内容，如何将 nginx 配置为代理服务器，以及如何将它与 FastCGI 应用程序连接。
 
 nginx 有一个主进程和几个工作进程。主进程的主要目的是读取和评估配置，并维护工作进程。工作进程进行实际的请求处理，nginx 采用基于事件的模型和依赖于操作系统的机制来有效地在工作进程之间分配请求。工作进程的数量在配置文件中定义，对于给定的配置来说，可以是固定的，也可以根据可用的 CPU 核心数自动调整（详见 [worker_processes](https://nginx.org/en/docs/ngx_core_module.html#worker_processes)）。
 
-nginx 及其模块的工作方式是在配置文件中决定的。默认情况下，配置文件被命名为 *nginx.conf* 并放在路径为 `/usr/local/nginx/conf `，`/etc/nginx` ，或 `/usr/local/etc/nginx` 的目录下。
+nginx 及其模块的工作方式是在配置文件中决定的。默认情况下，配置文件被命名为 *nginx.conf* 并放在路径为 <u>*/usr/local/nginx/conf*</u> ，*<u>/etc/nginx</u>* ，或 <u>*/usr/local/etc/nginx*</u> 的目录下。
 
 # 启动、停止和重新加载配置
 
@@ -36,7 +36,7 @@ nginx -s signal
 nginx -s quit
 ```
 
-该命令应该在启动 nginx 的同一用户下执行。
+> 该命令应该在启动 nginx 的同一用户下执行。
 
 在配置文件中所做的更改不会立即被应用，直到向 nginx 发送重载配置的命令或者重启 nginx 。要重新加载配置，请执行：
 
@@ -46,7 +46,7 @@ nginx -s reload
 
 一旦主进程收到重载配置的信号，它就会检查新配置文件的语法有效性，并尝试应用其中提供的配置。如果成功，主进程启动新的工作进程，并向旧的工作进程发送消息，要求它们关闭。否则，主进程将回滚更改，并继续使用旧配置工作。旧工作进程在收到关闭命令后，会停止接受新的连接，并继续为当前的请求提供服务并持续到所有这些请求都得到服务。在此之后，旧的工作进程退出。
 
-也可以借助 Unix 工具（如 *kill* 工具）向 nginx 进程发送信号。在下面这个例子中，一个信号被直接发送给一个具有给定进程 ID 的进程。nginx 主进程的进程 ID 默认写在 `/usr/local/nginx/logs` 或 `/var/run` 目录下的 *nginx.pid* 中。例如，如果主进程 ID 是 *1628*，要发送 `QUIT` 信号使 nginx 优雅的关闭，执行：
+也可以借助 Unix 工具（如 *kill* 工具）向 nginx 进程发送信号。在下面这个例子中，一个信号被直接发送给一个具有给定进程 ID 的进程。nginx 主进程的进程 ID 默认写在 <u>*/usr/local/nginx/logs*</u> 或 <u>*/var/run*</u> 目录下的 *nginx.pid* 中。例如，如果主进程 ID 是 *1628*，要发送 `QUIT` 信号使 nginx 优雅的关闭，执行：
 
 ```bash
 kill -s QUIT 1628
@@ -119,7 +119,7 @@ server {
 }
 ```
 
-这已经是一个在标准端口 80 上监听的服务器的工作配置，可以在本地机器上访问 `http://localhost` 。为了响应以 */images/* 为开头的 URI 的请求，服务器将从 */data/images* 目录中发送文件。例如，在响应 `http://localhost/images/example.png` 的请求时，nginx 会发送 */data/images/example.png* 文件。如果这个文件不存在，nginx 会发送一个 404 error 的响应。不是以 */images/* 开头的 URI 请求将被映射到 */data/www* 目录。例如，在响应 `http://localhost/some/example.html` 请求时，nginx 将发送 */data/www/some/example.html* 文件。
+这已经是一个在标准端口 80 上监听的服务器的工作配置，可以在本地机器上访问 `http://localhost` 。为了响应以 */images/* 为开头的 URI 的请求，服务器将从 */data/images* 目录中发送文件。例如，在响应 `http://localhost/images/example.png` 的请求时，nginx 会发送 <u>*/data/images/example.png*</u> 文件。如果这个文件不存在，nginx 会发送一个 404 error 的响应。不是以 */images/* 开头的 URI 请求将被映射到 */data/www* 目录。例如，在响应 `http://localhost/some/example.html` 请求时，nginx 将发送 <u>*/data/www/some/example.html*</u> 文件。
 
 要应用新的配置，如果还没有启动 nginx，请启动 nginx，或者向 nginx 的主进程发送重载信号，执行以下命令：
 
@@ -127,7 +127,7 @@ server {
 nginx -s reload
 ```
 
-如果有什么事情没有达到预期的效果，你可以尝试在 `/usr/local/nginx/logs` 或 `/var/log/nginx` 目录下的 *access.log* 和 *error.log* 文件中查找原因。
+> 如果有什么事情没有达到预期的效果，你可以尝试在 `/usr/local/nginx/logs` 或 `/var/log/nginx` 目录下的 *access.log* 和 *error.log* 文件中查找原因。
 
 # 设置一个简单的代理服务器
 
