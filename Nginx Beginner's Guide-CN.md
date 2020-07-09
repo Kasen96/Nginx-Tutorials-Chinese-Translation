@@ -78,7 +78,7 @@ Web 服务器的一个重要任务是提供文件（如图像或静态 HTML 页�
 
 接着，打开配置文件。默认的配置文件已经包含了几个 server 块的例子，大部分都被注释掉了。现在注释掉所有的区块，然后开始一个新的 server 区块。
 
-```bash
+```nginx
 http {
     server {
     }
@@ -89,7 +89,7 @@ http {
 
 将下面的 location 块添加到 server 块中：
 
-```bash
+```nginx
 location / {
     root /data/www;
 }
@@ -99,7 +99,7 @@ location / {
 
 接着添加第二个 location 块：
 
-```bash
+```nginx
 location /images/ {
     root /data;
 }
@@ -109,7 +109,7 @@ location /images/ {
 
 server 块的最终配置应该是这样的：
 
-```bash
+```nginx
 server {
     location / {
         root /data/www;
@@ -139,7 +139,7 @@ nginx 经常被使用的一个方法是把它设置为代理服务器，也就�
 
 首先，定义代理服务器，在 nginx 的配置文件中增加一个 server 块，内容如下：
 
-```bash
+```nginx
 server {
     listen 8080;
     root /data/up1;
@@ -153,7 +153,7 @@ server {
 
 接下来，使用上一节的服务器配置，并将其修改为代理服务器配置。在第一个 location 块中，放入[proxy_pass](https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_pass) 指令，并在参数中指定代理服务器的协议、名称和端口（在我们的例子中，它是 `http://localhost:8080`）。
 
-```bash
+```nginx
 server {
     location / {
         proxy_pass http://localhost:8080;
@@ -167,7 +167,7 @@ server {
 
 我们将修改第二个 location 块，目前将带有 */images/* 前缀的请求映射到 */data/images* 目录下的文件，使其与具有典型文件扩展名的图片请求相匹配。修改后的 location 块看起来像这样：
 
-```bash
+```nginx
 location ~ \.(gif|jpg|png)$ {
    root /data/images;
 }
@@ -179,7 +179,7 @@ location ~ \.(gif|jpg|png)$ {
 
 代理服务器的最终配置如下：
 
-```bash
+```nginx
 server {
     location / {
         proxy_pass http://localhost:8080/;
@@ -203,7 +203,7 @@ nginx 可以用来路由请求到 FastCGI 服务器，这些服务器运行的�
 
 最基本的能与一台 FastCGI 服务器一起工作的 nginx 配置包括使用 [fastcgi_pass](https://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_pass) 指令代替 proxy_pass 指令，以及使用 [fastcgi_param](https://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_param) 指令来设置传递给 FastCGI 服务器的参数。假设 FastCGI 服务器可以在 `localhost:9000` 上访问。以上一节的代理配置为基础，用 fastcgi_pass 指令替换 proxy_pass 指令，并将参数改为 `localhost:9000`。在 PHP 中，SCRIPT_FILENAME 参数用于确定脚本名称，QUERY_STRING 参数用于传递请求参数。最终的配置将是：
 
-```bash
+```nginx
 server {
     location / {
         fastcgi_pass  localhost:9000;
@@ -218,3 +218,4 @@ server {
 ```
 
 这将设置一个服务器，通过 FastCGI 协议将所有请求（静态图像请求除外）路由到运行在 `localhost:9000` 上的代理服务器。
+
