@@ -5,3 +5,5 @@ Nginx Tutorial Chinese Translation
 
 * [Nginx Beginner’s Guide 中文翻译](Nginx%20Beginner's%20Guide-CN.md)
 
+* [How nginx processes a request 中文翻译](How%20nginx%20processes%20a%20request-CN.md)
+
