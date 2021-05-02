@@ -1,0 +1,12 @@
+{
+  "name": "nginx-tutorials-chinese-translation",
+  "version": "1.0.0",
+  "description": "Nginx Tutorials Chinese Translation",
+  "scripts": {
+    "docsify": "./node_modules/.bin/docsify"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "docsify-cli": "^4.4.3"
+  }
+}

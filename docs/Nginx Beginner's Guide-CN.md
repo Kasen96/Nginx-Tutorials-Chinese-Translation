@@ -1,11 +1,12 @@
 Nginx Beginner's Guide 中文翻译
 ============================
 
-* [启动、停止和重新加载配置](#启动停止和重新加载配置)
-* [配置文件结构](#配置文件结构)
-* [提供静态内容](#提供静态内容)
-* [设置一个简单的代理服务器](#设置一个简单的代理服务器)
-* [设置 FastCGI 代理](#设置-FastCGI-代理)
+- [Nginx Beginner's Guide 中文翻译](#nginx-beginners-guide-中文翻译)
+- [启动、停止和重新加载配置](#启动停止和重新加载配置)
+- [配置文件结构](#配置文件结构)
+- [提供静态内容](#提供静态内容)
+- [设置一个简单的代理服务器](#设置一个简单的代理服务器)
+- [设置 FastCGI 代理](#设置-fastcgi-代理)
 
 翻译自 [Nginx Beginner's Guide](https://nginx.org/en/docs/beginners_guide.html)。
 
@@ -72,7 +73,7 @@ nginx 由模块组成，这些模块由配置文件中指定的指令控制。�
 
 # 提供静态内容
 
-Web 服务器的一个重要任务是提供文件（如图像或静态 HTML 页面）。你将实现一个例子，根据请求的不同，文件将从不同的本地目录提供：*/data/www*（包含 HTML 文件）和 */data/images*（包含图像）。这就需要编辑配置文件，并在 [http](https://nginx.org/en/docs/http/ngx_http_core_module.html#http) 块内设置一个带有两个 [location](https://nginx.org/en/docs/http/ngx_http_core_module.html#location) 区块的 [server](https://nginx.org/en/docs/http/ngx_http_core_module.html#server) 区块。
+Web 服务器的一个重要任务是提供文件（如图像或静态 HTML 页面）。你将实现一个例子，根据请求的不同，文件将从不同的本地目录提供： */data/www*（包含 HTML 文件）和 */data/images*（包含图像）。这就需要编辑配置文件，并在 [http](https://nginx.org/en/docs/http/ngx_http_core_module.html#http) 块内设置一个带有两个 [location](https://nginx.org/en/docs/http/ngx_http_core_module.html#location) 区块的 [server](https://nginx.org/en/docs/http/ngx_http_core_module.html#server) 区块。
 
 首先，创建 */data/www* 目录，并将 *index.html* 文件与任何文本内容放入其中，并创建 */data/images* 目录，将一些图片放入其中。
 
@@ -173,7 +174,7 @@ location ~ \.(gif|jpg|png)$ {
 }
 ```
 
-参数是一个正则表达式，匹配所有以 *.gif*、*.jpg* 或 *.png* 结尾的 URI 。正则表达式应该在前面加上`~`。相应的请求将被映射到 */data/images* 目录。
+参数是一个正则表达式，匹配所有以 *.gif*、 *.jpg* 或 *.png* 结尾的 URI 。正则表达式应该在前面加上`~`。相应的请求将被映射到 */data/images* 目录。
 
 当 nginx 选择一个 location 块来服务一个请求时，它首先检查指定前缀的 [location](https://nginx.org/en/docs/http/ngx_http_core_module.html#location) 指令，记住前缀最长的 location，然后检查正则表达式。如果与正则表达式匹配，nginx 就选择这个 location，否则，就选择之前记住的那个。
 
@@ -191,7 +192,7 @@ server {
 }
 ```
 
-该服务器将过滤以 *.gif*、*.jpg* 或 *.png* 结尾的请求，并将其映射到 */data/images* 目录（通过在 root 指令的参数中添加 URI），并将所有其他请求传递给上面配置的代理服务器。
+该服务器将过滤以 *.gif*、 *.jpg* 或 *.png* 结尾的请求，并将其映射到 */data/images* 目录（通过在 root 指令的参数中添加 URI），并将所有其他请求传递给上面配置的代理服务器。
 
 要应用新的配置，按照前面章节的描述向 nginx 发送重载信号。
 
